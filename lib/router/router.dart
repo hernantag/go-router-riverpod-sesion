@@ -21,28 +21,22 @@ GoRouter router(RouterRef ref) {
     refreshListenable: estadoAutenticacion,
     routes: $appRoutes,
     redirect: (context, state) {
-      final bool estamosComprobando = estadoAutenticacion.value is Comprobando;
+      final Autenticacion authState = estadoAutenticacion.value;
 
-      if (estamosComprobando &&
-          ((estadoAutenticacion.value as Comprobando).comprobando.isLoading ||
-              (estadoAutenticacion.value as Comprobando)
-                  .comprobando
-                  .hasError)) {
-        return "/splash";
+      if (authState.comprobando || authState.errorComprobacion) {
+        return const SpalshRoute().location;
       }
 
       bool autenticado = estadoAutenticacion.value.autenticado;
 
-      if (!autenticado) return "/login";
+      if (!autenticado) return const LoginRoute().location;
 
       if (state.location == const LoginRoute().location && autenticado) {
-        return "/";
+        return const HomeRoute().location;
       }
-
-      print(state.location);
-      print(state.path);
-      print(state.pageKey);
-      print(state.queryParametersAll);
+      if (state.location == const SpalshRoute().location && autenticado) {
+        return const HomeRoute().location;
+      }
 
       return null;
     },

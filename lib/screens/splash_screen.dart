@@ -12,18 +12,16 @@ class SplashScreen extends ConsumerWidget {
 
     return Scaffold(
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        if (auth is Comprobando)
-          if (auth.comprobando.isLoading) ...[
-            const Row(),
-            const Text("Splash screen 😎😎😎"),
-            const SizedBox(
-              height: 10,
-            ),
-            const CircularProgressIndicator()
-          ] else if (auth.comprobando.hasError)
-            Text(
-              "Pincho! ${auth.comprobando.asError?.error}",
-            ),
+        if (auth.comprobando) ...[
+          Center(child: Text("Splash screen 😎😎😎")),
+          const SizedBox(
+            height: 10,
+          ),
+          const CircularProgressIndicator()
+        ] else if (auth.errorComprobacion)
+          Text(
+            "Ocurrió un error!",
+          ),
       ]),
     );
   }

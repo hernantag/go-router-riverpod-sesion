@@ -14,7 +14,7 @@ class LoginScreen extends ConsumerWidget {
       body: Center(
           child: ElevatedButton(
               onPressed: ref.read(sesionControllerProvider.notifier).login,
-              child: const Text("Logueate jeej"))),
+              child: const Text("Logueate!"))),
     );
   }
 }

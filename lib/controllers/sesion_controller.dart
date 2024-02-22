@@ -1,7 +1,8 @@
-import 'dart:math';
-
+import 'package:flutter/material.dart';
 import 'package:go_router_autenticacion/models/auth_model.dart';
+import 'package:go_router_autenticacion/models/user_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'sesion_controller.g.dart';
 
@@ -9,27 +10,48 @@ part 'sesion_controller.g.dart';
 class SesionController extends _$SesionController {
   @override
   Autenticacion build() {
-    recuperarVariablesRemotas();
+    recuperarSesion();
     return Autenticacion.comprobando(val: const AsyncLoading());
   }
 
-  void login() {
-    state = Autenticacion.logueado();
+  void login() async {
+    final SharedPreferences instance = await SharedPreferences.getInstance();
+
+    const String fakeToken = "HELLOWORLD";
+
+    instance.setString("token", fakeToken);
+
+    final UsuarioModel user = await getUser(fakeToken);
+
+    state = Autenticacion.logueado(user: user);
   }
 
-  void logout() {
+  void logout() async {
+    final SharedPreferences instance = await SharedPreferences.getInstance();
+    instance.clear();
     state = Autenticacion.deslogueado();
   }
 
-  Future<void> recuperarVariablesRemotas() async {
+  void recuperarSesion() async {
     await Future.delayed(const Duration(seconds: 3));
-    final Random randomGenerator = Random();
-    final int randomNumber = randomGenerator.nextInt(100);
-    if (randomNumber > 50) {
-      state = Autenticacion.comprobando(val: const AsyncData(1));
-    } else {
-      state = Autenticacion.comprobando(
-          val: AsyncError(Exception("Error random!"), StackTrace.current));
+
+    final SharedPreferences instance = await SharedPreferences.getInstance();
+
+    final bool existeToken = instance.containsKey("token");
+
+    if (!existeToken) {
+      state = Autenticacion.deslogueado();
+      return;
     }
+
+    final String? token = instance.getString("token");
+    final UsuarioModel user = await getUser(token!);
+
+    state = Autenticacion.logueado(user: user);
   }
+}
+
+Future<UsuarioModel> getUser(String token) async {
+  await Future.delayed(Durations.extralong4);
+  return UsuarioModel(id: 1, nombre: "Hernan");
 }

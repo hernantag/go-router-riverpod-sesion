@@ -9,7 +9,6 @@ part of 'routes.dart';
 List<RouteBase> get $appRoutes => [
       $homeRoute,
       $loginRoute,
-      $nombresRoute,
       $spalshRoute,
     ];
 
@@ -17,18 +16,6 @@ RouteBase get $homeRoute => GoRouteData.$route(
       path: '/',
       name: 'inicio',
       factory: $HomeRouteExtension._fromState,
-      routes: [
-        GoRouteData.$route(
-          path: 'suertudo',
-          name: 'suertudo',
-          factory: $SuertudoRouteExtension._fromState,
-        ),
-        GoRouteData.$route(
-          path: 'mala-suerte',
-          name: 'mala-suerte',
-          factory: $MalaSuerteRouteExtension._fromState,
-        ),
-      ],
     );
 
 extension $HomeRouteExtension on HomeRoute {
@@ -36,41 +23,6 @@ extension $HomeRouteExtension on HomeRoute {
 
   String get location => GoRouteData.$location(
         '/',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-extension $SuertudoRouteExtension on SuertudoRoute {
-  static SuertudoRoute _fromState(GoRouterState state) => const SuertudoRoute();
-
-  String get location => GoRouteData.$location(
-        '/suertudo',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-extension $MalaSuerteRouteExtension on MalaSuerteRoute {
-  static MalaSuerteRoute _fromState(GoRouterState state) =>
-      const MalaSuerteRoute();
-
-  String get location => GoRouteData.$location(
-        '/mala-suerte',
       );
 
   void go(BuildContext context) => context.go(location);
@@ -94,29 +46,6 @@ extension $LoginRouteExtension on LoginRoute {
 
   String get location => GoRouteData.$location(
         '/login',
-      );
-
-  void go(BuildContext context) => context.go(location);
-
-  Future<T?> push<T>(BuildContext context) => context.push<T>(location);
-
-  void pushReplacement(BuildContext context) =>
-      context.pushReplacement(location);
-
-  void replace(BuildContext context) => context.replace(location);
-}
-
-RouteBase get $nombresRoute => GoRouteData.$route(
-      path: '/nombres',
-      name: 'nombres',
-      factory: $NombresRouteExtension._fromState,
-    );
-
-extension $NombresRouteExtension on NombresRoute {
-  static NombresRoute _fromState(GoRouterState state) => const NombresRoute();
-
-  String get location => GoRouteData.$location(
-        '/nombres',
       );
 
   void go(BuildContext context) => context.go(location);

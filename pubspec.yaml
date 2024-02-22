@@ -30,6 +30,7 @@ environment:
 dependencies:
   go_router: ^9.0.3
   random_name_generator: ^1.3.0
+  shared_preferences: ^2.2.2
 
   flutter:
     sdk: flutter
