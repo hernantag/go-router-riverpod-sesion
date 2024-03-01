@@ -8,7 +8,7 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final UsuarioModel? user = ref.watch(sesionControllerProvider).usuario;
+    final UserModel? user = ref.watch(sesionControllerProvider).usuario;
 
     return Scaffold(
       appBar: AppBar(

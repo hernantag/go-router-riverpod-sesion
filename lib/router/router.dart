@@ -9,32 +9,32 @@ part 'router.g.dart';
 
 @riverpod
 GoRouter router(RouterRef ref) {
-  ValueNotifier<Autenticacion> estadoAutenticacion =
-      ValueNotifier(Autenticacion.comprobando(val: const AsyncLoading()));
+  ValueNotifier<Authentication> authStateListener =
+      ValueNotifier(Authentication.checking(val: const AsyncLoading()));
 
   ref.listen(
     sesionControllerProvider.select((value) => value),
-    (prev, next) => estadoAutenticacion.value = next,
+    (prev, next) => authStateListener.value = next,
   );
 
   final rutas = GoRouter(
-    refreshListenable: estadoAutenticacion,
+    refreshListenable: authStateListener,
     routes: $appRoutes,
     redirect: (context, state) {
-      final Autenticacion authState = estadoAutenticacion.value;
+      final Authentication authState = authStateListener.value;
 
-      if (authState.comprobando || authState.errorComprobacion) {
-        return const SpalshRoute().location;
+      if (authState.currentlyChecking || authState.hasCheckingError) {
+        return const SplashRoute().location;
       }
 
-      bool autenticado = estadoAutenticacion.value.autenticado;
+      bool isAuthenticated = authStateListener.value.isAuthenticated;
 
-      if (!autenticado) return const LoginRoute().location;
+      if (!isAuthenticated) return const LoginRoute().location;
 
-      if (state.location == const LoginRoute().location && autenticado) {
+      if (state.location == const LoginRoute().location && isAuthenticated) {
         return const HomeRoute().location;
       }
-      if (state.location == const SpalshRoute().location && autenticado) {
+      if (state.location == const SplashRoute().location && isAuthenticated) {
         return const HomeRoute().location;
       }
 

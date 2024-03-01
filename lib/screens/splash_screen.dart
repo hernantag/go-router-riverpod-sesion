@@ -8,18 +8,18 @@ class SplashScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final Autenticacion auth = ref.watch(sesionControllerProvider);
+    final Authentication auth = ref.watch(sesionControllerProvider);
 
     return Scaffold(
       body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        if (auth.comprobando) ...[
-          Center(child: Text("Splash screen 😎😎😎")),
+        if (auth.currentlyChecking) ...[
+          const Center(child: Text("Splash screen 😎😎😎")),
           const SizedBox(
             height: 10,
           ),
           const CircularProgressIndicator()
-        ] else if (auth.errorComprobacion)
-          Text(
+        ] else if (auth.hasCheckingError)
+          const Text(
             "Ocurrió un error!",
           ),
       ]),

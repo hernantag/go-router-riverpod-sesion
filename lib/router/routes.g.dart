@@ -9,12 +9,12 @@ part of 'routes.dart';
 List<RouteBase> get $appRoutes => [
       $homeRoute,
       $loginRoute,
-      $spalshRoute,
+      $splashRoute,
     ];
 
 RouteBase get $homeRoute => GoRouteData.$route(
       path: '/',
-      name: 'inicio',
+      name: 'home',
       factory: $HomeRouteExtension._fromState,
     );
 
@@ -58,13 +58,13 @@ extension $LoginRouteExtension on LoginRoute {
   void replace(BuildContext context) => context.replace(location);
 }
 
-RouteBase get $spalshRoute => GoRouteData.$route(
+RouteBase get $splashRoute => GoRouteData.$route(
       path: '/splash',
-      factory: $SpalshRouteExtension._fromState,
+      factory: $SplashRouteExtension._fromState,
     );
 
-extension $SpalshRouteExtension on SpalshRoute {
-  static SpalshRoute _fromState(GoRouterState state) => const SpalshRoute();
+extension $SplashRouteExtension on SplashRoute {
+  static SplashRoute _fromState(GoRouterState state) => const SplashRoute();
 
   String get location => GoRouteData.$location(
         '/splash',

@@ -10,7 +10,7 @@ part 'routes.g.dart';
 
 @TypedGoRoute<HomeRoute>(
   path: '/',
-  name: "inicio",
+  name: "home",
 )
 class HomeRoute extends GoRouteData {
   const HomeRoute();
@@ -27,9 +27,9 @@ class LoginRoute extends GoRouteData {
   Widget build(BuildContext context, state) => const LoginScreen();
 }
 
-@TypedGoRoute<SpalshRoute>(path: "/splash")
-class SpalshRoute extends GoRouteData {
-  const SpalshRoute();
+@TypedGoRoute<SplashRoute>(path: "/splash")
+class SplashRoute extends GoRouteData {
+  const SplashRoute();
 
   @override
   Widget build(BuildContext context, state) => const SplashScreen();

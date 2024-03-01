@@ -1,61 +1,62 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router_autenticacion/models/user_model.dart';
 
-abstract class Autenticacion {
-  factory Autenticacion.logueado({required UsuarioModel user}) = _Autenticado;
-  factory Autenticacion.deslogueado() = _NoAutenticado;
-  factory Autenticacion.comprobando({required AsyncValue val}) {
-    return _Comprobando(estado: val);
+abstract class Authentication {
+  factory Authentication.authenticated({required UserModel user}) =
+      _Authenticated;
+  factory Authentication.notAuthenticated() = _NotAuthenticated;
+  factory Authentication.checking({required AsyncValue val}) {
+    return _Checking(estado: val);
   }
 
-  bool get autenticado {
+  bool get isAuthenticated {
     switch (this) {
-      case _Autenticado():
+      case _Authenticated():
         return true;
       default:
         return false;
     }
   }
 
-  bool get comprobando {
-    if (this is _Comprobando && (this as _Comprobando).estado.isLoading) {
+  bool get currentlyChecking {
+    if (this is _Checking && (this as _Checking).estado.isLoading) {
       return true;
     } else {
       return false;
     }
   }
 
-  bool get errorComprobacion {
-    if (this is _Comprobando && (this as _Comprobando).estado.hasError) {
+  bool get hasCheckingError {
+    if (this is _Checking && (this as _Checking).estado.hasError) {
       return true;
     } else {
       return false;
     }
   }
 
-  UsuarioModel? get usuario {
-    if (autenticado) {
-      return (this as _Autenticado).user;
+  UserModel? get usuario {
+    if (isAuthenticated) {
+      return (this as _Authenticated).user;
     } else {
       return null;
     }
   }
 
-  Autenticacion._();
+  Authentication._();
 }
 
-class _Autenticado extends Autenticacion {
-  _Autenticado({required this.user}) : super._();
+class _Authenticated extends Authentication {
+  _Authenticated({required this.user}) : super._();
 
-  final UsuarioModel user;
+  final UserModel user;
 }
 
-class _NoAutenticado extends Autenticacion {
-  _NoAutenticado() : super._();
+class _NotAuthenticated extends Authentication {
+  _NotAuthenticated() : super._();
 }
 
-class _Comprobando extends Autenticacion {
-  _Comprobando({required this.estado}) : super._();
+class _Checking extends Authentication {
+  _Checking({required this.estado}) : super._();
 
   final AsyncValue estado;
 }

@@ -9,9 +9,9 @@ part 'sesion_controller.g.dart';
 @riverpod
 class SesionController extends _$SesionController {
   @override
-  Autenticacion build() {
-    recuperarSesion();
-    return Autenticacion.comprobando(val: const AsyncLoading());
+  Authentication build() {
+    restoreSession();
+    return Authentication.checking(val: const AsyncLoading());
   }
 
   void login() async {
@@ -21,37 +21,37 @@ class SesionController extends _$SesionController {
 
     instance.setString("token", fakeToken);
 
-    final UsuarioModel user = await getUser(fakeToken);
+    final UserModel user = await getUser(fakeToken);
 
-    state = Autenticacion.logueado(user: user);
+    state = Authentication.authenticated(user: user);
   }
 
   void logout() async {
     final SharedPreferences instance = await SharedPreferences.getInstance();
     instance.clear();
-    state = Autenticacion.deslogueado();
+    state = Authentication.notAuthenticated();
   }
 
-  void recuperarSesion() async {
+  void restoreSession() async {
     await Future.delayed(const Duration(seconds: 3));
 
     final SharedPreferences instance = await SharedPreferences.getInstance();
 
-    final bool existeToken = instance.containsKey("token");
+    final bool tokenExists = instance.containsKey("token");
 
-    if (!existeToken) {
-      state = Autenticacion.deslogueado();
+    if (!tokenExists) {
+      state = Authentication.notAuthenticated();
       return;
     }
 
     final String? token = instance.getString("token");
-    final UsuarioModel user = await getUser(token!);
+    final UserModel user = await getUser(token!);
 
-    state = Autenticacion.logueado(user: user);
+    state = Authentication.authenticated(user: user);
   }
 }
 
-Future<UsuarioModel> getUser(String token) async {
+Future<UserModel> getUser(String token) async {
   await Future.delayed(Durations.extralong4);
-  return UsuarioModel(id: 1, nombre: "Hernan");
+  return UserModel(id: 1, nombre: "Hernan");
 }
